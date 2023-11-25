@@ -153,60 +153,77 @@ public static void encontrarPuntoDeSilla(int[][] matriz) {
         int opt = input.nextInt();
         while (opt != 3) {
             switch (opt) {
-                case 1:
-                    System.out.println("-----Bienvenido a tres en raya------");
-                    System.out.println("Tablero actual");
-                    char tablero[][] = new char[3][3];
-                    boolean prueba;
-                    char signo = 'X';
-                    imprimir(tablero);
-                    for (int i = 1; verificarVictoria(tablero, signo) != true; i++) {
-                        int x = 0, y = 0;
+                       case 1:
+                    char resp = 's';
+                    while (resp == 's' || resp == 'S') {
+                        System.out.println("-----Bienvenido a tres en raya------");
+                        System.out.println("Tablero actual");
+                        char tablero[][] = new char[3][3];
+                        boolean prueba;
+                        char signo = 'X';
+                        imprimir(tablero);
+                        for (int i = 1; verificarVictoria(tablero, signo) != true; i++) {
+                            int x = 0, y = 0;
 
-                        System.out.println("Es el turno de: " + signo);
-                        if (i % 2 != 0) {
-                            signo = 'X';
-                            System.out.println("Ingrese la posision X: ");
-                            x = input.nextInt();
-                            System.out.println("Ingrese la posision Y: ");
-                            y = input.nextInt();
-                            // si la posicion no es valida la vuelva a pedir hasta que sea valida
-                            while (!verificarPosicionValida(tablero, x, y)) {
-                                System.out.println("Posicion no valida. Ingrese la posision X: ");
+                            System.out.println("Es el turno de: " + signo);
+                            if (i % 2 != 0) {
+                                signo = 'X';
+                                System.out.println("Ingrese la posision X: ");
                                 x = input.nextInt();
                                 System.out.println("Ingrese la posision Y: ");
                                 y = input.nextInt();
+                                // si la posicion no es valida la vuelva a pedir hasta que sea valida
+                                while (!verificarPosicionValida(tablero, x, y)) {
+                                    System.out.println("Posicion no valida. Ingrese la posision X: ");
+                                    x = input.nextInt();
+                                    System.out.println("Ingrese la posision Y: ");
+                                    y = input.nextInt();
+                                }
+                            } else if (i % 2 == 0) {
+
+                                signo = '0';
+                                boolean posicionValida = false;
+
+                                // revisa que la maquina este eligiendo una posicion valida
+                                while (!posicionValida) {
+                                    x = rand.nextInt(0, 2);
+                                    y = rand.nextInt(0, 2);
+
+                                    if (verificarPosicionValida(tablero, x, y)) {
+                                        posicionValida = true;
+                                        System.out.println("La maquina ha elegido la posicion " + x + " " + y);
+
+                                    }
+                                }
                             }
-                        } else if (i % 2 == 0) {
+                            if (verificarPosicionValida(tablero, x, y)) {
+                                tablero[x][y] = signo;
 
-                            signo = '0';
-                            boolean posicionValida = false;
+                                tablero = generalTablero(tablero);
+                                imprimir(tablero);
 
-                            // revisa que la maquina este eligiendo una posicion valida
-                            while (!posicionValida) {
-                                x = rand.nextInt(0, 2);
-                                y = rand.nextInt(0, 2);
-
-                                if (verificarPosicionValida(tablero, x, y)) {
-                                    posicionValida = true;
-                                    System.out.println("La maquina ha elegido la posicion " + x + " " + y);
-
+                                if (verificarEmpate(tablero)) {
+                                    System.out.println("¡Empate!");
+                                } else if (verificarVictoria(tablero, signo)) {
+                                    System.out.println("Ha ganado " + signo + "!.");
                                 }
                             }
                         }
-                        if (verificarPosicionValida(tablero, x, y)) {
-                            tablero[x][y] = signo;
-
-                            tablero = generalTablero(tablero);
-                            imprimir(tablero);
-
-                            if (verificarEmpate(tablero)) {
-                                System.out.println("¡Empate!");
-                            } else if (verificarVictoria(tablero, signo)) {
-                                System.out.println("Ha ganado " + signo + "!.");
-                            }
-                        }
+                        System.out.println("Desea volver a jugar(s/n): ");
+                        input.nextLine(); 
+                        resp = input.nextLine().charAt(0);
                     }
+
+                    break;
+                case 2:
+                    System.out.println("Ingrese el tamaño de las filas: ");
+                    int filas = input.nextInt();
+                    System.out.println("Ingrese el tamaño de las filas: ");
+                    int columnas = input.nextInt();
+                    int puntosSilla[][] = new int[filas][columnas];
+                    System.out.println("Matriz generada: ");
+                    imprimirInt(puntosSilla = generarIntMatrizAleatoria(filas, columnas));
+                    encontrarPuntoDeSilla(puntosSilla);
 
                     break;
                 case 2:
